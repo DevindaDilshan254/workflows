@@ -1,0 +1,26 @@
+name: USD LKR Alert
+
+on:
+  schedule:
+    - cron: "*/5 * * * *"  # every 30 minutes
+  workflow_dispatch:
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: pip install requests
+
+      - name: Run alert
+        env:
+          API_KEY: ${{ secrets.API_KEY }}
+          EMAIL: ${{ secrets.EMAIL }}
+          APP_PASSWORD: ${{ secrets.APP_PASSWORD }}
+        run: python usd_lkr_test.py
